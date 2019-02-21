@@ -12,9 +12,9 @@ public interface BowlingService {
 
     Map<String, List<InputRoll>> readInputs(String path) throws IOException;
 
-    Map<String, List<Frame>> process(Map<String, List<InputRoll>> mapRolls) throws InconsistentDataException;
+    Map<String, List<Frame>> parseRolls(Map<String, List<InputRoll>> mapRolls) throws InconsistentDataException;
 
     void processResults(Map<String, List<Frame>> mapRolls) throws InconsistentDataException;
 
-    void showResults(Map<String, List<Frame>> mapFrames) throws InconsistentDataException;
+    String showResults(Map<String, List<Frame>> mapFrames) throws InconsistentDataException;
 }

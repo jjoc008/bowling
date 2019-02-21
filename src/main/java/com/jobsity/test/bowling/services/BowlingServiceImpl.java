@@ -29,7 +29,7 @@ public class BowlingServiceImpl implements BowlingService {
     }
 
     @Override
-    public Map<String, List<Frame>> process(Map<String, List<InputRoll>> mapRolls) throws InconsistentDataException {
+    public Map<String, List<Frame>> parseRolls(Map<String, List<InputRoll>> mapRolls) throws InconsistentDataException {
         try {
 
 
@@ -144,9 +144,17 @@ public class BowlingServiceImpl implements BowlingService {
 
                             scoreFrame += BowlingUtils.getNumericValue(frames.get(i).getRollTwo());
 
-                            if (frames.get(i + 1).getRollTwo().equals(Constants.STRIKE)) {
+                            if(i == 8 && frames.get(i+1).getRollOne().equals(Constants.STRIKE)){
+                                scoreFrame += BowlingUtils.getNumericValue(frames.get(i + 1).getRollOne());
+
+                                if(i == 8){
+                                    scoreFrame += BowlingUtils.getNumericValue(frames.get(i + 1).getRollTwo());
+                                }
+
+                            }else if (frames.get(i + 1).getRollTwo().equals(Constants.STRIKE)) {
 
                                 scoreFrame += BowlingUtils.getNumericValue(frames.get(i + 1).getRollTwo());
+
                                 if (frames.get(i + 2).getRollTwo().equals(Constants.STRIKE)) {
 
                                     scoreFrame += BowlingUtils.getNumericValue(frames.get(i + 2).getRollTwo());
@@ -206,12 +214,14 @@ public class BowlingServiceImpl implements BowlingService {
 
 
     @Override
-    public void showResults(Map<String, List<Frame>> mapFrames) throws InconsistentDataException {
+    public String showResults(Map<String, List<Frame>> mapFrames) throws InconsistentDataException {
 
         try {
             Integer lengthPlayerCell = 12;
             Integer lengthFrameheaderCell = 10;
             Integer lengthPinfallCell = 5;
+
+            StringBuilder response = new StringBuilder();
 
             for (int i = 0; i <= 10; i++) {
 
@@ -223,15 +233,15 @@ public class BowlingServiceImpl implements BowlingService {
                     cell = StringUtils.rightPad(String.valueOf(i), lengthFrameheaderCell, StringUtils.SPACE);
                 }
 
-                System.out.print(cell);
+                response.append(cell);
             }
 
-            System.out.println();
+            response.append("\n");
 
             //print players information
             mapFrames.forEach((player, frameList) -> {
 
-                System.out.println(StringUtils.rightPad(player, lengthPlayerCell, StringUtils.SPACE));
+                response.append(StringUtils.rightPad(player, lengthPlayerCell, StringUtils.SPACE) + StringUtils.LF);
 
                 //print pinfalls
                 for (int i = 0; i <= 10; i++) {
@@ -248,10 +258,10 @@ public class BowlingServiceImpl implements BowlingService {
                         }
                     }
 
-                    System.out.print(cell);
+                    response.append(cell);
                 }
 
-                System.out.println();
+                response.append(StringUtils.LF);
 
                 //print scores
                 for (int i = 0; i <= 10; i++) {
@@ -263,12 +273,14 @@ public class BowlingServiceImpl implements BowlingService {
                         cell = StringUtils.rightPad(Objects.toString(frameList.get(i - 1).getScore(), StringUtils.EMPTY), lengthFrameheaderCell, StringUtils.SPACE);
                     }
 
-                    System.out.print(cell);
+                    response.append(cell);
                 }
 
-                System.out.println();
+                response.append(StringUtils.LF);
 
             });
+
+            return response.toString();
 
         } catch (IndexOutOfBoundsException ex) {
             throw new InconsistentDataException(ex);

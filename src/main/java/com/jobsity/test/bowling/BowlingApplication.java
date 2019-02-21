@@ -36,10 +36,11 @@ public class BowlingApplication implements CommandLineRunner {
         try {
             readInputs = this.bowlingService.readInputs(args[0]);
 
-            Map<String, List<Frame>> listMap = this.bowlingService.process(readInputs);
+            Map<String, List<Frame>> listMap = this.bowlingService.parseRolls(readInputs);
 
             this.bowlingService.processResults(listMap);
-            this.bowlingService.showResults(listMap);
+            String response = this.bowlingService.showResults(listMap);
+            System.out.println(response);
         } catch (IOException | InconsistentDataException e) {
            throw new RuntimeException(e);
         }
