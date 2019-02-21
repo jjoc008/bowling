@@ -28,12 +28,13 @@ public class BowlingApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        System.out.println(args[0]);
         System.out.println("Response");
         System.out.println();
 
         Map<String, List<InputRoll>> readInputs = null;
         try {
-            readInputs = this.bowlingService.readInputs();
+            readInputs = this.bowlingService.readInputs(args[0]);
 
             Map<String, List<Frame>> listMap = this.bowlingService.process(readInputs);
 

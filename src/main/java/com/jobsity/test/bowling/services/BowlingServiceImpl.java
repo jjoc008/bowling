@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class BowlingServiceImpl implements BowlingService {
 
     @Override
-    public Map<String, List<InputRoll>> readInputs() throws IOException {
-        return FileUtil.readFile(Constants.FILE_INPUT_PAHT)
+    public Map<String, List<InputRoll>> readInputs(String path) throws IOException {
+        return FileUtil.readFile(path)
                 .stream()
                 .map(s -> {
                     String[] parts = s.split(Constants.TAB);

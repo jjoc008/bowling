@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface BowlingService {
 
-    Map<String, List<InputRoll>> readInputs() throws IOException;
+    Map<String, List<InputRoll>> readInputs(String path) throws IOException;
 
     Map<String, List<Frame>> process(Map<String, List<InputRoll>> mapRolls) throws InconsistentDataException;
 
